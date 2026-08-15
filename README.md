@@ -1,6 +1,6 @@
 # Stale-Project
 
-> To make my resume better, I have to upload these f**king stale Projects😕
+> To make my resume better, I have to upload these fucking stale Projects😕
 
 These are my College Projects.
 
