@@ -1,0 +1,46 @@
+# Compiled class files
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+*.log
+*.txt.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary
+*.tmp
+*.bak
+*.swp
+
+# Captcha API - Keep all source code

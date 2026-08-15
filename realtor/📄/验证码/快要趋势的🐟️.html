@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)http://localhost:8088/realtor/captcha.jsp -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安全验证</title>
+
+    
+    <link rel="icon" href="http://localhost:8088/realtor/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="http://localhost:8088/realtor/favicon.ico" type="image/x-icon">
+
+    <script src="./安全验证_files/vue.global.js.下载"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #E0E5EC;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+        .card {
+            background: #E0E5EC;
+            border-radius: 32px;
+            box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5);
+            padding: 35px;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
+        .card-header { text-align: center; margin-bottom: 20px; }
+        .card-header h3 { color: #3D4852; font-size: 22px; font-weight: 600; margin: 0; }
+        .card-header p { color: #6B7280; margin-top: 8px; font-size: 14px; }
+        .captcha-container {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(180deg, #74b9ff 0%, #0984e3 100%);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            cursor: crosshair;
+            box-shadow: inset 6px 6px 10px rgb(163,177,198,0.4), inset -6px -6px 10px rgba(255,255,255,0.3);
+        }
+        .fish-wrapper {
+            position: absolute;
+            cursor: pointer;
+            font-size: 45px;
+            user-select: none;
+            transition: none;
+        }
+        .fish-wrapper:hover { filter: brightness(1.15); }
+        .fish-emoji {
+            display: inline-block;
+            animation: fishWiggle 0.5s ease-in-out infinite;
+        }
+        .fish-emoji.catched { animation: catchPulse 0.6s ease-out; }
+        @keyframes fishWiggle {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        @keyframes catchPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            bottom: -20px;
+        }
+        .seaweed {
+            position: absolute;
+            bottom: 0;
+            font-size: 30px;
+            animation: seaweedSway 3s ease-in-out infinite;
+        }
+        @keyframes seaweedSway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        .status-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #6B7280;
+            font-size: 15px;
+            min-height: 24px;
+            transition: all 0.3s;
+        }
+        .status-text.success { color: #38B2AC; font-weight: 600; }
+        .status-text.error { color: #E53E3E; }
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #E0E5EC;
+            border-radius: 6px;
+            margin-top: 15px;
+            overflow: hidden;
+            box-shadow: inset 3px 3px 6px rgb(163,177,198,0.6), inset -3px -3px 6px rgba(255,255,255,0.5);
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6C63FF 0%, #8B84FF 100%);
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 6px;
+            box-shadow: 3px 3px 6px rgb(163,177,198,0.3), -3px -3px 6px rgba(255,255,255,0.3);
+        }
+        .hint-text {
+            text-align: center;
+            margin-top: 10px;
+            color: #6B7280;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="card" data-v-app=""><div class="card-header"><h3>🎣 点击小鱼验证</h3><p>请点击游动的小鱼完成验证</p></div><div class="captcha-container"><div class="seaweed" style="left: 5%; animation-delay: 0s;">🌿</div><div class="seaweed" style="left: 20%; animation-delay: 0.3s;">🌿</div><div class="seaweed" style="left: 45%; animation-delay: 0.6s;">🌿</div><div class="seaweed" style="left: 70%; animation-delay: 0.2s;">🌿</div><div class="seaweed" style="left: 85%; animation-delay: 0.5s;">🌿</div><div class="bubble" style="width: 18.7052px; height: 18.7052px; left: 404.327px; animation: 3s linear 1.3146s infinite normal none running bubbleRise;"></div><div class="bubble" style="width: 16.5522px; height: 16.5522px; left: 165.083px; animation: 3s linear 1.87215s infinite normal none running bubbleRise;"></div><div class="bubble" style="width: 14.1548px; height: 14.1548px; left: 153.859px; animation: 3s linear 1.52255s infinite normal none running bubbleRise;"></div><div class="bubble" style="width: 18.5935px; height: 18.5935px; left: 428.666px; animation: 3s linear 0.33574s infinite normal none running bubbleRise;"></div><div class="bubble" style="width: 12.7088px; height: 12.7088px; left: 212.237px; animation: 3s linear 1.98745s infinite normal none running bubbleRise;"></div><div class="bubble" style="width: 18.446px; height: 18.446px; left: 212.827px; animation: 3s linear 0.344035s infinite normal none running bubbleRise;"></div><div class="bubble" style="width: 8.59751px; height: 8.59751px; left: 145.337px; animation: 3s linear 1.61612s infinite normal none running bubbleRise;"></div><div class="bubble" style="width: 9.59736px; height: 9.59736px; left: 101.638px; animation: 3s linear 1.62816s infinite normal none running bubbleRise;"></div><div class="fish-wrapper" style="left: 237.38px; top: 124.222px; transform: rotate(44.9163deg) scaleX(-1);"><span class="fish-emoji">🐟</span></div></div><div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div><div class="status-text">点击游动的小鱼开始验证</div><div class="hint-text">进度: 0 / 3 次</div></div>
+
+    <script>
+        const { createApp, ref, reactive, onMounted, onUnmounted } = Vue;
+        createApp({
+            setup() {
+                const fishX = ref(100);
+                const fishY = ref(100);
+                const targetX = ref(100);
+                const targetY = ref(100);
+                const isCatched = ref(false);
+                const isVerified = ref(false);
+                const statusText = ref('点击游动的小鱼开始验证');
+                const statusClass = ref('');
+                const progressPercent = ref(0);
+                const clickCount = ref(0);
+                const requiredClicks = ref(3);
+                const fishFlip = ref(1);
+                const fishTilt = ref(0);
+                
+                const bubbles = ref([]);
+                let fishAnimationId = null;
+                let moveProgress = 0;
+                const containerWidth = 460;
+                const containerHeight = 280;
+
+                const initBubbles = () => {
+                    bubbles.value = Array.from({length: 8}, (_, i) => ({
+                        id: i,
+                        size: 8 + Math.random() * 12,
+                        x: 20 + Math.random() * (containerWidth - 40),
+                        duration: 3 + Math.random() * 2,
+                        delay: Math.random() * 2
+                    }));
+                };
+
+                // ???
+                const easeInOutCubic = (t) => {
+                    return t < 0.5 
+                        ? 4 * t * t * t 
+                        : 1 - Math.pow(-2 * t + 2, 3) / 2;
+                };
+
+                const moveFish = () => {
+                    if (isVerified.value) return;
+                    
+                    if (!isCatched.value) {
+                        moveProgress += 0.008;
+                        
+                        if (moveProgress >= 1) {
+                            moveProgress = 0;
+                            setNewTarget();
+                        }
+                        
+                        const easedProgress = easeInOutCubic(moveProgress);
+                        const newX = targetX.value - 22.5 + (fishX.value - targetX.value + 22.5) * (1 - easedProgress);
+                        fishX.value = newX;
+                        fishY.value = targetY.value - 22.5 + (fishY.value - targetY.value + 22.5) * (1 - easedProgress);
+                        
+                        const dx = targetX.value - fishX.value;
+                        const dy = targetY.value - fishY.value;
+                        // 左右翻转
+                        fishFlip.value = dx > 0 ? -1 : 1;
+                        // 倾斜角度：目标越偏上/下，倾斜越大，限制 ±45°
+                        const rawAngle = Math.atan2(dy, Math.abs(dx)) * 180 / Math.PI;
+                        fishTilt.value = Math.max(-45, Math.min(45, rawAngle));
+                    }
+                    
+                    fishAnimationId = requestAnimationFrame(moveFish);
+                };
+
+                const setNewTarget = () => {
+                    targetX.value = 50 + Math.random() * (containerWidth - 100);
+                    targetY.value = 50 + Math.random() * (containerHeight - 150);
+                };
+
+                const catchFish = () => {
+                    if (isCatched.value || isVerified.value) return;
+                    
+                    isCatched.value = true;
+                    clickCount.value++;
+                    progressPercent.value = (clickCount.value / requiredClicks.value) * 100;
+                    
+                    statusText.value = `🎯 成功捕获! (${clickCount.value}/${requiredClicks.value})`;
+                    statusClass.value = 'success';
+                    
+                    setTimeout(() => {
+                        isCatched.value = false;
+                        setNewTarget();
+                        moveProgress = 0;
+                        
+                        if (clickCount.value >= requiredClicks.value) {
+                            completeVerification();
+                        } else {
+                            statusText.value = '继续点击小鱼...';
+                            statusClass.value = '';
+                        }
+                    }, 500);
+                };
+
+                const handleMiss = () => {
+                    if (isVerified.value) return;
+                    statusText.value = '😅 没点到！再试一次';
+                    statusClass.value = 'error';
+                    setTimeout(() => {
+                        statusText.value = '点击游动的小鱼';
+                        statusClass.value = '';
+                    }, 1500);
+                };
+
+                const completeVerification = () => {
+                    statusText.value = '🎉 验证成功！正在跳转...';
+                    statusClass.value = 'success';
+                    isVerified.value = true;
+                    
+                    setTimeout(() => {
+                        const user = JSON.parse(localStorage.getItem('user') || '{}');
+                        if (user && user.role === 'admin') {
+                            window.location.href = 'admin/dashboard.jsp';
+                        } else {
+                            window.location.href = 'user/home.jsp';
+                        }
+                    }, 1500);
+                };
+
+                onMounted(() => {
+                    initBubbles();
+                    setNewTarget();
+                    moveFish();
+                });
+
+                onUnmounted(() => {
+                    if (fishAnimationId) cancelAnimationFrame(fishAnimationId);
+                });
+
+                return {
+                    fishX, fishY, isCatched, statusText, statusClass,
+                    progressPercent, clickCount, requiredClicks, bubbles,
+                    fishFlip, fishTilt, catchFish, handleMiss
+                };
+            }
+        }).mount('#app');
+    </script>
+
+
+</body></html>

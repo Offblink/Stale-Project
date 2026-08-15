@@ -1,0 +1,44 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.exam.pojo.*, java.util.*" %>
+
+<!--获取传递过来的用户列表 users-->
+<%
+    List<User> users = (List<User>) request.getAttribute("users");
+%>
+
+<html>
+<head>
+    <title>用户信息查询</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+        .btn { padding: 8px 15px; background: #6c757d; color: white; text-decoration: none; border-radius: 3px; display: inline-block; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #007bff; color: white; }
+    </style>
+</head>
+<body>
+<a href="admin?method=main" class="btn">返回主页</a>
+<h2>用户信息列表</h2>
+<table>
+    <thead>
+    <tr>
+        <th>用户名</th>
+        <th>密码</th>
+        <th>角色</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% if (users != null) {
+        for (User u : users) {
+    %>
+    <tr>
+        <td><%= u.getUsername() %></td>
+        <td><%= u.getPassword() %></td>
+        <td><%= u.getRole() %></td>
+    </tr>
+    <% } } %>
+    </tbody>
+</table>
+</body>
+</html>

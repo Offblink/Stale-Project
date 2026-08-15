@@ -1,0 +1,20 @@
+# Build outputs
+target/
+node_modules/
+dist/
+out/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# AI tool junk
+.SmartTomcat/
+.agent/
+.agents/
+.ai_completion/
+
+# OS
+.DS_Store
+Thumbs.db

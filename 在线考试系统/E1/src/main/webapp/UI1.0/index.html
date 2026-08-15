@@ -1,0 +1,92 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>在线考试系统 - 登录/注册</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 350px; }
+        .tab { overflow: hidden; border-bottom: 1px solid #ccc; margin-bottom: 15px; }
+        .tab button { background-color: inherit; float: left; border: none; outline: none; cursor: pointer; padding: 10px 16px; transition: 0.3s; font-size: 16px; }
+        .tab button.active { border-bottom: 2px solid #007bff; color: #007bff; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button[type="submit"] { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button[type="submit"]:hover { background-color: #0056b3; }
+        .error { color: red; font-size: 12px; text-align: center; margin-bottom: 10px; }
+    </style>
+    <script>
+        function openTab(tabName) {
+            var i, x;
+            x = document.getElementsByClassName("tab-content");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            document.getElementById(tabName).style.display = "block";
+
+            // Active class handling
+            var btns = document.getElementsByClassName("tablinks");
+            for (i = 0; i < btns.length; i++) {
+                btns[i].className = btns[i].className.replace(" active", "");
+            }
+            event.currentTarget.className += " active";
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="tab">
+        <button class="tablinks active" onclick="openTab('Login')">登录</button>
+        <button class="tablinks" onclick="openTab('Register')">注册</button>
+    </div>
+
+    <!--用于显示信息-->
+    <div class="error">${msg}</div>
+
+    <!-- 登录表单 -->
+    <div id="Login" class="tab-content" style="display: block;">
+
+            <!--变量 action 的值是 login -->
+            <input type="hidden" name="action" value="login">
+
+            <div class="form-group">
+                <label>用户名:</label>
+                <input type="text" name="username" required>
+            </div>
+            <div class="form-group">
+                <label>密码:</label>
+                <input type="password" name="password" required>
+            </div>
+            <button type="submit">登录</button>
+        </form>
+    </div>
+
+    <!-- 注册表单 -->
+    <div id="Register" class="tab-content" style="display: none;">
+        <form action="auth" method="post">
+            <input type="hidden" name="action" value="register">
+            <div class="form-group">
+                <label>用户名:</label>
+                <input type="text" name="username" required>
+            </div>
+            <div class="form-group">
+                <label>密码:</label>
+                <input type="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label>确认密码:</label>
+                <input type="password" name="confirmPassword" required>
+            </div>
+            <div class="form-group">
+                <label>身份:</label>
+                <select name="role">
+                    <option value="student">学生</option>
+                    <option value="teacher">教师</option>
+                </select>
+            </div>
+            <button type="submit">注册</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

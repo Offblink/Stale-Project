@@ -1,0 +1,76 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.exam.pojo.*, java.util.*, com.exam.service.*" %>
+<%
+    User user = (User) session.getAttribute("currentUser");
+    if (user == null) { response.sendRedirect("index.jsp"); return; }
+
+    List<Question> questions = (List<Question>) request.getAttribute("questions");
+    List<Answer> myAnswers = (List<Answer>) request.getAttribute("myAnswers");
+    ExamService examService = new ExamService(); // 用于查找评分和题目内容
+%>
+<html>
+<head>
+    <title>学生端 - 在线考试系统</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f9f9f9; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #ddd; margin-bottom: 20px; background: white; padding: 15px; }
+        .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        h2, h3 { margin-top: 0; }
+        textarea { width: 100%; height: 80px; margin-top: 5px; box-sizing: border-box; }
+        .btn { padding: 8px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 3px; border: none; cursor: pointer; }
+        .btn-right { float: right; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f2f2f2; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div>欢迎您，<%= user.getUsername() %> (学生)</div>
+    <div><a href="student?method=toInfo" class="btn">更改账户信息</a> <a href="auth" class="btn" style="background:#6c757d">退出</a></div>
+</div>
+
+<!-- 考试区域 -->
+<div class="card">
+    <h3>当前试题 (随机抽取)</h3>
+    <form action="student?method=submit" method="post">
+        <% if (questions != null) {
+            for (int i = 0; i < questions.size(); i++) {
+                Question q = questions.get(i);
+        %>
+        <div style="margin-bottom: 15px;">
+            <p><strong>题目 <%= i+1 %>:</strong> <%= q.getContent() %></p>
+            <input type="hidden" name="questionId" value="<%= q.getId() %>">
+            <textarea name="answer_<%= q.getId() %>" placeholder="请输入答案..."></textarea>
+        </div>
+        <% } } %>
+        <button type="submit" class="btn">提交试卷</button>
+    </form>
+</div>
+
+<!-- 历史记录区域 -->
+<div class="card">
+    <h3>已提交答案与评分</h3>
+    <table>
+        <tr>
+            <th>题目内容</th>
+            <th>我的答案</th>
+            <th>评分</th>
+            <th>评分教师</th>
+        </tr>
+        <% if (myAnswers != null) {
+            for (Answer ans : myAnswers) {
+                Grade g = examService.getGradeByAnswerId(ans.getId());
+                String content = examService.getQuestionContent(ans.getQuestionId());
+        %>
+        <tr>
+            <td><%= content %></td>
+            <td><%= ans.getAnswerContent() %></td>
+            <td><%= g == null ? "未评分" : g.getScore() %></td>
+            <td><%= g == null ? "-" : g.getTeacherUsername() %></td>
+        </tr>
+        <% } } %>
+    </table>
+</div>
+</body>
+</html>

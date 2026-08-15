@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<jpackage-state version="24.0.2" platform="windows">
+  <app-version>1.2.0</app-version>
+  <main-launcher>高校教学管理系统V1.2.0</main-launcher>
+  <main-class>com.example.gui.MainMenuGUI</main-class>
+  <signed>false</signed>
+  <app-store>false</app-store></jpackage-state>

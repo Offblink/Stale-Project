@@ -1,0 +1,84 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.exam.pojo.*, java.util.*" %>
+<%
+    List<Question> questions = (List<Question>) request.getAttribute("questions");
+    String keyword = (String) request.getAttribute("keyword");
+    if (keyword == null) keyword = "";
+%>
+<html>
+<head>
+    <title>试题管理</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+        .container { background: white; padding: 20px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .btn { padding: 8px 15px; color: white; text-decoration: none; border-radius: 3px; border: none; cursor: pointer; }
+        .btn-back { background: #6c757d; margin-bottom: 20px; display: inline-block; }
+        .btn-add { background: #28a745; }
+        .btn-edit { background: #ffc107; color: black; font-size: 12px; padding: 5px 10px; }
+        .btn-delete { background: #dc3545; font-size: 12px; padding: 5px 10px; }
+        .btn-search { background: #007bff; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f2f2f2; }
+        input[type="text"] { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .search-bar { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
+    </style>
+</head>
+<body>
+<a href="admin?method=main" class="btn btn-back">返回主页</a>
+
+<div class="container">
+    <h3>试题管理</h3>
+
+    <!-- 搜索栏 -->
+    <div class="search-bar">
+        <form action="admin?method=manageQuestions" method="post" style="display: flex; gap: 10px; flex: 1;">
+            <input type="text" name="keyword" placeholder="输入关键字搜索..." value="<%= keyword %>" style="flex: 1;">
+            <button type="submit" class="btn btn-search">搜索</button>
+            <a href="admin?method=manageQuestions" class="btn" style="background: #aaa; text-decoration: none;">重置</a>
+        </form>
+    </div>
+
+    <!-- 新增试题 -->
+    <div style="margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 15px;">
+        <h4 style="margin-top:0;">新增试题</h4>
+        <form action="admin?method=addQuestion" method="post">
+            <div style="display: flex; gap: 10px;">
+                <input type="text" name="content" placeholder="输入新试题内容..." required style="flex: 1;">
+                <button type="submit" class="btn btn-add">添加</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 试题列表 -->
+    <table>
+        <thead>
+        <tr>
+            <th style="width: 60px;">ID</th>
+            <th>题目内容</th>
+            <th style="width: 150px;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% if (questions != null) {
+            for (Question q : questions) {
+        %>
+        <tr>
+            <td><%= q.getId().substring(0, Math.min(5, q.getId().length())) %>...</td>
+            <td>
+                <form action="admin?method=editQuestion" method="post" style="display: flex; gap: 5px; align-items: center;">
+                    <input type="hidden" name="id" value="<%= q.getId() %>">
+                    <input type="text" name="content" value="<%= q.getContent() %>" style="flex: 1;">
+                    <button type="submit" class="btn btn-edit">保存</button>
+                </form>
+            </td>
+            <td>
+                <a href="admin?method=deleteQuestion&id=<%= q.getId() %>" class="btn btn-delete" onclick="return confirm('确定删除? 此操作将同时删除相关的学生答案和评分！')">删除</a>
+            </td>
+        </tr>
+        <% } } %>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fish Captcha Demo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: #E0E5EC;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: #E0E5EC;
+            border-radius: 32px;
+            box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5);
+            padding: 35px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .card-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .card-header h3 {
+            color: #3D4852;
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0;
+        }
+        .card-header p {
+            color: #6B7280;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: #6C63FF;
+            color: white;
+            box-shadow: 5px 5px 10px rgba(163,177,198,0.5), -5px -5px 10px rgba(255,255,255,0.5);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #E0E5EC;
+            color: #6B7280;
+            box-shadow: 5px 5px 10px rgba(163,177,198,0.5), -5px -5px 10px rgba(255,255,255,0.5);
+        }
+        .btn-secondary:hover {
+            color: #3D4852;
+            transform: translateY(-2px);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 16px;
+            text-align: center;
+            display: none;
+        }
+        .result.success {
+            display: block;
+            background: #38B2AC;
+            color: white;
+        }
+        .result.error {
+            display: block;
+            background: #E53E3E;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h3>🐟 Fish Captcha Demo</h3>
+            <p>Click on the swimming fish to complete verification</p>
+        </div>
+        
+        <!-- Captcha container -->
+        <div id="captcha-container" class="captcha-container"></div>
+        
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn btn-secondary" onclick="captcha.reset()">Reset</button>
+            <button class="btn btn-secondary" onclick="captcha.destroy(); document.querySelector('.result').style.display = 'none';">Destroy</button>
+        </div>
+        
+        <!-- Result -->
+        <div class="result" id="result"></div>
+    </div>
+    
+    <!-- Include the captcha script -->
+    <script src="js/fish-captcha.js"></script>
+    
+    <script>
+        // Initialize captcha
+        const captcha = new FishCaptcha({
+            container: '#captcha-container',
+            onComplete: () => {
+                document.querySelector('#result').textContent = '🎉 Verification Complete!';
+                document.querySelector('#result').className = 'result success';
+            },
+            onFail: () => {
+                console.log('Click missed!');
+            },
+            onProgress: (progress) => {
+                console.log(`Progress: ${progress.currentCount}/${progress.requiredClicks}`);
+            }
+        });
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            captcha.init();
+        });
+    </script>
+</body>
+</html>

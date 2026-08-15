@@ -1,0 +1,147 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.exam.pojo.*, java.util.*" %>
+<%
+    List<User> users = (List<User>) request.getAttribute("users");
+%>
+<html>
+<head>
+    <title>用户信息查询</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container-custom {
+            max-width: 1200px;
+        }
+        .header-area {
+            background: linear-gradient(90deg, #4e73df 0%, #224abe 100%);
+            border-radius: 1rem 1rem 0 0;
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        .btn-return {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .btn-return:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        .table-container {
+            background-color: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+        }
+        .table-users {
+            margin-bottom: 0;
+        }
+        .table-users thead th {
+            background-color: #4e73df;
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 1.25rem 1.5rem;
+        }
+        .table-users tbody td {
+            padding: 1.25rem 1.5rem;
+            vertical-align: middle;
+        }
+        .table-users tbody tr {
+            border-bottom: 1px solid #e3e6f0;
+            transition: background-color 0.15s;
+        }
+        .table-users tbody tr:hover {
+            background-color: #f8f9fe;
+        }
+        .badge-role {
+            padding: 0.5em 1em;
+            border-radius: 50rem;
+            font-weight: 500;
+        }
+        .badge-admin {
+            background-color: #dc3545;
+            color: white;
+        }
+        .badge-teacher {
+            background-color: #fd7e14;
+            color: white;
+        }
+        .badge-student {
+            background-color: #20c997;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container container-custom py-4">
+    <!-- 标题区域 -->
+    <div class="header-area">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <a href="admin?method=main" class="btn btn-return">
+                <i class="bi bi-arrow-left me-2"></i>返回控制台
+            </a>
+        </div>
+        <h2 class="mb-2"><i class="bi bi-people-fill me-2"></i>用户信息列表</h2>
+        <p class="mb-0 opacity-75">系统内所有注册的学生与教师账户。</p>
+    </div>
+
+    <!-- 用户表格 -->
+    <div class="table-container">
+        <% if (users != null && !users.isEmpty()) { %>
+        <div class="table-responsive">
+            <table class="table table-hover table-users">
+                <thead>
+                <tr>
+                    <th scope="col" style="width: 35%;">用户名</th>
+                    <th scope="col" style="width: 35%;">密码 (哈希)</th>
+                    <th scope="col" style="width: 30%;">角色</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for (User u : users) {
+                    String roleClass = "";
+                    switch(u.getRole()) {
+                        case "admin": roleClass = "badge-admin"; break;
+                        case "teacher": roleClass = "badge-teacher"; break;
+                        case "student": roleClass = "badge-student"; break;
+                        default: roleClass = "bg-secondary";
+                    }
+                %>
+                <tr>
+                    <td class="fw-bold"><%= u.getUsername() %></td>
+                    <td>
+                        <code class="bg-light p-2 rounded d-inline-block"><%= u.getPassword() %></code>
+                    </td>
+                    <td>
+                                <span class="badge badge-role <%= roleClass %>">
+                                    <% if ("admin".equals(u.getRole())) { %>
+                                        <i class="bi bi-shield-lock me-1"></i>管理员
+                                    <% } else if ("teacher".equals(u.getRole())) { %>
+                                        <i class="bi bi-person-badge me-1"></i>教师
+                                    <% } else { %>
+                                        <i class="bi bi-person-circle me-1"></i>学生
+                                    <% } %>
+                                </span>
+                    </td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+        <% } else { %>
+        <div class="text-center py-5 text-muted">
+            <i class="bi bi-person-x fs-1"></i>
+            <p class="mt-2">暂无用户数据</p>
+        </div>
+        <% } %>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

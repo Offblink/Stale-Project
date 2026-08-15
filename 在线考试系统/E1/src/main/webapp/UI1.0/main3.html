@@ -1,0 +1,81 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.exam.pojo.*, java.util.*, com.exam.service.*" %>
+<%
+    User user = (User) session.getAttribute("currentUser");
+    if (user == null) { response.sendRedirect("index.jsp"); return; }
+
+    List<Answer> answers = (List<Answer>) request.getAttribute("answers");
+    ExamService examService = new ExamService();
+%>
+<html>
+<head>
+    <title>教师端 - 在线考试系统</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f9f9f9; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: white; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .card { background: white; padding: 20px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .btn { padding: 8px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 3px; border: none; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f2f2f2; }
+        .graded { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div><h2>教师工作台</h2></div>
+    <div>
+        <a href="teacher?method=toInfo" class="btn">更改账户信息</a>
+        <a href="auth" class="btn" style="background:#6c757d">退出</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3>学生答案列表</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>学生</th>
+            <th>题目内容</th>
+            <th>答案内容</th>
+            <th>提交时间</th>
+            <th>评分状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% if (answers != null) {
+            for (Answer ans : answers) {
+                String content = examService.getQuestionContent(ans.getQuestionId());
+                Grade g = examService.getGradeByAnswerId(ans.getId());
+        %>
+        <tr>
+            <td><%= ans.getStudentUsername() %></td>
+            <td><%= content %></td>
+            <td><%= ans.getAnswerContent() %></td>
+            <td><%= ans.getSubmitTime() %></td>
+            <td>
+                <% if (g != null) { %>
+                <span class="graded"><%= g.getScore() %> (by <%= g.getTeacherUsername() %>)</span>
+                <% } else { %>
+                <span style="color:gray">未评分</span>
+                <% } %>
+            </td>
+            <td>
+                <form action="teacher?method=grade" method="post" style="display:flex; align-items:center; gap:5px;">
+                    <input type="hidden" name="answerId" value="<%= ans.getId() %>">
+                    <select name="score">
+                        <option value="优秀">优秀</option>
+                        <option value="良好">良好</option>
+                        <option value="合格">合格</option>
+                    </select>
+                    <button type="submit" class="btn" style="padding:5px 10px; font-size:12px;">提交评分</button>
+                </form>
+            </td>
+        </tr>
+        <% } } %>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

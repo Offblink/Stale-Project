@@ -1,0 +1,54 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<!--在jsp文件中引入实体User-->
+<%@ page import="com.exam.pojo.User" %>
+
+<%
+    // 将存储在session中的currentUser变量取到后，应用在网页上
+    User user = (User) session.getAttribute("currentUser");
+    if (user == null) { response.sendRedirect("index.jsp"); return; }
+%>
+
+<html>
+<head>
+    <title>管理员后台</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+        .header { background: #343a40; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .container { padding: 30px; text-align: center; }
+        .menu-grid { display: flex; justify-content: center; gap: 30px; margin-top: 50px; }
+        .menu-item { background: white; padding: 40px; width: 200px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-decoration: none; color: #333; transition: transform 0.2s; }
+        .menu-item:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .menu-item h3 { margin: 0 0 10px 0; color: #007bff; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h2>管理员控制台</h2>
+
+    <!--退出登录后返回“开始”界面-->
+    <a href="auth" style="color: white; text-decoration: none;">退出登录</a>
+
+</div>
+
+<div class="container">
+    <h1>欢迎回来，Admin</h1>
+    <p>请选择操作模块</p>
+
+    <div class="menu-grid">
+
+        <!--这里采用超链接的形式，指定调用名称为 “admin” 的servelt，并执行listUsers方法-->
+        <a href="admin?method=listUsers" class="menu-item">
+            <h3>用户查询</h3>
+            <p>查看所有学生与教师信息</p>
+        </a>
+
+        <a href="admin?method=manageQuestions" class="menu-item">
+            <h3>试题管理</h3>
+            <p>增删改查题库内容</p>
+        </a>
+
+    </div>
+</div>
+</body>
+</html>
